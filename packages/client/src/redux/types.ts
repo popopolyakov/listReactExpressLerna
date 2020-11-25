@@ -1,4 +1,6 @@
 export enum ActionType {
     SET_NEWSLIST,
-    SET_LOADING_NEWSLIST
+    SET_LOADING_NEWSLIST,
+    SET_NEWSCARD,
+    SET_REPLYCOMMENT
 }

@@ -6,6 +6,7 @@ export interface INewsItem {
     type: 'job' | 'story' | 'comment' | 'poll' | 'pollopt';
     by: string;
     time: string | Date;
+    diffTimeMinutes: string | number;
     text?: string;
     deleted?: boolean;
     dead?: boolean;
@@ -14,9 +15,31 @@ export interface INewsItem {
     url?: string | number;
     score?: string | number;
     kids?: Array<number>;
-    parts?: Array<number> | string | number;
-    descendants?: number | string
+    parts?: Array<number>;
+    descendants?: number | string;
 }
 
 
-export interface INewsArray extends Array<INewsItem> {}
+export interface IComment {
+    id: number;
+    by: string;
+    time: string;
+    text: string;
+    lvlReply: number;
+    quntityReply: number
+}
+
+export interface ICommentsArray extends Array<IComment> {}
+
+export interface INewsArray extends Array<INewsItem> { }
+
+export interface INewsCard {
+    id: number | string;
+    url: string;
+    title: string;
+    time: string;
+    by: string;
+    comments?: ICommentsArray;
+    quntityComments: number;
+    lvlReply: 0;
+}
