@@ -10,7 +10,8 @@ export interface InitialState {
     newsCard: INewsCard;
     replyComments: {
         [id: string]: ICommentsArray;
-    }
+    };
+    openedComments: Array<Number>
 }
 
 
@@ -29,8 +30,8 @@ export const initialState: InitialState = {
         comments: [],
         lvlReply: 0
     },
-    replyComments: {}
-        
+    replyComments: {},
+    openedComments: []
 
 };
 
@@ -46,9 +47,10 @@ export const rootReducer: Reducer<InitialState, DispatchAction> = (state = initi
     } else if (action.type === ActionType.SET_NEWSCARD) {
         return {...state, newsCard: action.payload.newsCard};
     } else if (action.type === ActionType.SET_REPLYCOMMENT) {
-        console.log(action.payload.replyComments);
-        
-        return {...state, replyComments: {...state.replyComments, ...action.payload.replyComments}
-        };
+        return {...state, replyComments: {...state.replyComments, ...action.payload.replyComments}};
+    } else if (action.type === ActionType.UPDATE_REPLYCOMMENT) {
+        return {...state, replyComments: action.payload.replyComments};
+    } else if (action.type === ActionType.SET_OPENEDCOMMENTARRAY) {
+        return {...state, openedComments: action.payload.openedComments};
     } else return state;
 };

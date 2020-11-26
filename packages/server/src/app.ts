@@ -49,26 +49,29 @@ app.get('/hackersList/:id', async function (req, res) {
                 async (idComment: number) => {
                     return await Axios.get(`https://hacker-news.firebaseio.com/v0/item/${idComment}.json`).then(res => {
                         if (!!res.data.by) {
+                            
+                           
                             return {
                                 id: res.data.id,
                                 by: res.data.by,
                                 time: res.data.time,
                                 text: res.data.text,
                                 lvlReply: 0,
-                                quntityReply: !!res.data.kids ? res.data.kids.length : 0
+                                quntityReply: Array.isArray(res.data.kids) ? res.data.kids.length : 0
                             }
                         }
                     })
                 }))
         }
+        comments = comments.filter(item => typeof item === 'object')
         return {
             id: item.data.id,
             url: item.data.url,
             title: item.data.title,
             time: item.data.time,
             by: item.data.by,
-            quntityComments: !!item.data.kids ? item.data.kids.length : 0,
-            comments: comments.filter(item => typeof item === 'object'),
+            quntityComments: comments.length,
+            comments: comments,
             lvlReply: 0
         }
     })
@@ -84,13 +87,15 @@ app.get('/hackersList/comments/:id', async function (req, res) {
                 async (idComment: number) => {
                     return await Axios.get(`https://hacker-news.firebaseio.com/v0/item/${idComment}.json`).then(res => {
                         if (!!res.data.by) {
+                            console.log(res.data);
+                            
                             return {
                                 id: res.data.id,
                                 by: res.data.by,
                                 time: res.data.time,
                                 text: res.data.text,
                                 lvlReply: 0,
-                                quntityReply: !!res.data.kids ? res.data.kids.length : 0
+                                quntityReply: Array.isArray(res.data.kids) ? res.data.kids.length : 0
                             }
                         }
                     })
@@ -98,7 +103,7 @@ app.get('/hackersList/comments/:id', async function (req, res) {
             )
         }
         return [
-            ...comments
+            ...comments.filter(item => typeof item === 'object'),
         ]
     })
     res.json(currentPost);

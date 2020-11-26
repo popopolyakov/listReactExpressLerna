@@ -14,8 +14,8 @@ import he from 'he'
 
 
 interface Props {
-    commentsArray: ICommentsArray
-    lvlReply: number
+    commentsArray: ICommentsArray;
+    lvlReply: number;
 }
 
 interface RouteParams {
@@ -24,43 +24,65 @@ interface RouteParams {
 interface StateProps {
     replyComments: {
         [id: string]: ICommentsArray;
-    }
+    };
+    loadingNewsList: boolean;
+    openedComments: Array<Number>
 }
 
 
 
 const Comments: React.FC<Props> = (props) => {
 
-    const {replyComments} = useSelector<InitialState, StateProps>((state: InitialState) => {
+    const {replyComments, loadingNewsList, openedComments} = useSelector<InitialState, StateProps>((state: InitialState) => {
         return {
-            replyComments: state.replyComments
+            replyComments: state.replyComments,
+            loadingNewsList: state.loadingNewsList,
+            openedComments: state.openedComments
         }
     });
-
-    let [openReplyArray, setOpenReplyArray] = useState([])
     const dispatch = useDispatch();
-    async function openReply(e: React.SyntheticEvent , id : Number) {
+    const rootDispatcher = new RootDispatcher(dispatch);
+  
+    async function openReply(e: React.SyntheticEvent, id: Number): Promise<void> {
         e.preventDefault()
-        await dispatch(fetchReplyComments(id));
-        setOpenReplyArray([...openReplyArray, id])
+        console.log(!loadingNewsList);
+        
+        if (!loadingNewsList) {
+            await dispatch(fetchReplyComments(id));
+            rootDispatcher.addOpenedComments(id)
+        } else {
+            
+        }
+        
+        console.log(openedComments, 'PROPS OPEN REPLY ARR');
+        
     }
 
-    return (
-    
-                                <div className='commentsBlock' style={{marginLeft: `${props.lvlReply*15} px`}}>
-                                    {props.commentsArray.map((item) => (
-                                        <div className='comment' key={item.id}>
-                                            <div className='commentAuthorInfo'>
-                                                <strong>{item.by}{item.id} { `${props.lvlReply*15} px`}</strong> <small>{ new Date(+item.time * 1000).toLocaleString('ru')}</small>
-                                            </div>
-                                            <div className="commentText" dangerouslySetInnerHTML={{ __html: he.decode(item.text) }}></div>
-                                            {/* Говорят, что фейсбук не рекомендуеет такое */}
+    let styleMarginLeft = {
+        marginLeft: `${props.lvlReply*20}px`
+    }
 
-                                            {item.quntityReply> 0 && <button type="button" className="btn btn-outline-secondary btn-sm" onClick={async (e) => await openReply(e, item.id)}>Посмотреть ответы</button>}
-                                            {(openReplyArray.includes(item.id)) && <Comments commentsArray={replyComments[item.id]} lvlReply={props.lvlReply+1}></Comments>}
-                                        </div>
-                                    ))}
-                                </div>
+
+    console.log(props.commentsArray);
+    return (
+        <div className={`commentsBlock mt-2 mb-2`} style={styleMarginLeft}>
+            {props.commentsArray.map((item) => (
+                <div className='comment mt-1 mb-0.5' key={item.id}>
+                    <div className='commentAuthorInfo'>
+                        <strong>{item.by}</strong> <small>{ new Date(+item.time * 1000).toLocaleString('ru')}</small>
+                    </div>
+                    <div className="commentText" dangerouslySetInnerHTML={{ __html: he.decode(item.text) }}></div>
+                    {/* Говорят, что фейсбук не рекомендуеет такое */}
+
+                    {item.quntityReply> 0 && <div className='text-right'><button type="button" className={`btn btn-outline-secondary btn-sm`} onClick={async (e) => await openReply(e, item.id)}>Посмотреть ответы</button></div>}
+                    
+                    {(openedComments.includes(item.id)) && <Comments commentsArray={replyComments[item.id]} lvlReply={props.lvlReply + 1}></Comments>}
+                    
+                </div>
+                
+            ))}
+            <hr className="mt-1" />
+        </div>
     )
 };
 

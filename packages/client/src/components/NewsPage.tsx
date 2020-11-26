@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import { RootDispatcher } from '../redux/rootRedux';
 import {InitialState} from "../redux/rootReducer";
 import classes from './style.module.less';
-import { fetchHackersList, fetchNewsCard } from '../redux/thunkActions';
+import { fetchHackersList, fetchNewsCard, fetchUpdateComments } from '../redux/thunkActions';
 import { INewsArray, INewsCard } from '../redux/interfaces';
 import LoadingIndicator from './LoadingIndicator';
 import './newsPage.module.css'
@@ -22,15 +22,17 @@ interface RouteParams {
 }
 interface StateProps {
     newsCard: INewsCard
-    loadingNewsList: boolean
+    loadingNewsList: boolean,
+    openedComments: Array<Number>
 }
 
 const MainList: React.FC<Props> = (props) => {
 
-    const {newsCard, loadingNewsList} = useSelector<InitialState, StateProps>((state: InitialState) => {
+    const {newsCard, loadingNewsList, openedComments} = useSelector<InitialState, StateProps>((state: InitialState) => {
         return {
             newsCard: state.newsCard,
-            loadingNewsList: state.loadingNewsList
+            loadingNewsList: state.loadingNewsList,
+            openedComments: state.openedComments
         }
     });
 
@@ -38,28 +40,34 @@ const MainList: React.FC<Props> = (props) => {
     const dispatch = useDispatch();
     const rootDispatcher = new RootDispatcher(dispatch);
     const params = useParams<RouteParams>();
+   
     useEffect(() => {
         console.log();
         
         if (newsCard.title === 'Initial Title') {   
             dispatch(fetchNewsCard(+params.id));
         }
+        console.log(openedComments);
         
+        const timer = setInterval(() => {
+            console.log(!loadingNewsList, openedComments);
+            
+            if (!loadingNewsList) { dispatch(fetchUpdateComments()) }
+        }, 5000);
+
+        return () => clearInterval(timer)
+
     }, []);
     
-    function htmldecode (str){
 
-        var txt = document.createElement('textarea');
-        txt.innerHTML = str;
-        return txt.value;
-      }
-    if (copied) {
-        console.log('Test Copied');
-        
+
+    if (copied) {        
         setTimeout(() => {
             setCopied(false)
         },2000)
     }
+    
+    
     return (
         <div className="container">
             {loadingNewsList && <LoadingIndicator/>}
