@@ -44,7 +44,9 @@ app.get('/hackersList/:id', async function (req, res) {
     let currentID: Number = +req.params.id
     let currentPost = await Axios.get(`https://hacker-news.firebaseio.com/v0/item/${currentID}.json`).then(async item => {
         let comments = []
-        if (!!item.data.kids) {
+        console.log(item.data);
+        
+        if (Array.isArray(item.data.kids)) {
             comments = await Promise.all(item.data.kids.map(
                 async (idComment: number) => {
                     return await Axios.get(`https://hacker-news.firebaseio.com/v0/item/${idComment}.json`).then(res => {
@@ -63,7 +65,7 @@ app.get('/hackersList/:id', async function (req, res) {
                     })
                 }))
         }
-        comments = comments.filter(item => typeof item === 'object')
+        comments = comments.filter(item => typeof item === 'object').sort((a, b) => b.time - a.time)
         return {
             id: item.data.id,
             url: item.data.url,
@@ -103,7 +105,7 @@ app.get('/hackersList/comments/:id', async function (req, res) {
             )
         }
         return [
-            ...comments.filter(item => typeof item === 'object'),
+            ...comments.filter(item => typeof item === 'object').sort((a, b) => b.time - a.time),
         ]
     })
     res.json(currentPost);

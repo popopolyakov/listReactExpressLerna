@@ -7,6 +7,7 @@ import { fetchHackersList } from '../redux/thunkActions';
 import { INewsArray } from 'src/redux/interfaces';
 import LoadingIndicator from './LoadingIndicator';
 import { Link } from 'react-router-dom';
+import Header from './Header';
 
 
 interface Props {
@@ -41,17 +42,20 @@ const MainList: React.FC<Props> = () => {
             dispatch(fetchHackersList())
         }, 60000);
 
-        return () => clearInterval(timer)
+        return () => {
+            clearInterval(timer)
+        }
       }, []);
 
     return (
         <div>
+            <Header buttonGroup={[{ id: 1, title: 'Refresh', mainLink: false, action: fetchHackersList}]}/>
             {loadingNewsList && <LoadingIndicator/>}
-            <div className="list-group align-items-center mt-3">
+            <div className="list-group align-items-center mt-3 container pr-0">
                 {hackersList.map((item, i) => {
                     if (!!item) {return (
-                        <Link to={`/hackersNews/${item.id}`} key={i} href="#" className="list-group-item list-group-item-action flex-column align-items-start" style={{ maxWidth: '1500px'}}>
-                            <div className="d-flex w-100 justify-content-between ">
+                        <Link to={`/hackersNews/${item.id}`} key={i} href="#" className=" mr-0 list-group-item list-group-item-action flex-column align-items-start" style={{ maxWidth: '1500px'}}>
+                            <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-0">{ item.title}</h5>
                                 <small>{new Date(+item.time * 1000).toLocaleString('ru')} (
                                     {+item.diffTimeMinutes > 60 ? `${Math.floor(+item.diffTimeMinutes / 60)} ${Math.floor(+item.diffTimeMinutes / 60) > 1 ? `hours`: 'hour'} ${+item.diffTimeMinutes % 60} ${+item.diffTimeMinutes % 60 > 1 ? 'minutes' : 'minute'}  ago` : `${item.diffTimeMinutes} minutes ago`

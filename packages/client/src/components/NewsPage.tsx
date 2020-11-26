@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import { RootDispatcher } from '../redux/rootRedux';
-import {InitialState} from "../redux/rootReducer";
+import {initialState, InitialState} from "../redux/rootReducer";
 import classes from './style.module.less';
 import { fetchHackersList, fetchNewsCard, fetchUpdateComments } from '../redux/thunkActions';
 import { INewsArray, INewsCard } from '../redux/interfaces';
@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import he from 'he'
 import Comments from './Comments'
+import Header from './Header';
 
 
 interface Props {
@@ -52,10 +53,14 @@ const MainList: React.FC<Props> = (props) => {
         const timer = setInterval(() => {
             console.log(!loadingNewsList, openedComments);
             
-            if (!loadingNewsList) { dispatch(fetchUpdateComments()) }
+            if (!loadingNewsList) { dispatch(fetchUpdateComments(+params.id)) }
         }, 5000);
 
-        return () => clearInterval(timer)
+        return () => {
+            dispatch(rootDispatcher.clearNewsCard())
+            dispatch(rootDispatcher.clearOpenedReply())
+            clearInterval(timer)
+        }
 
     }, []);
     
@@ -69,17 +74,19 @@ const MainList: React.FC<Props> = (props) => {
     
     
     return (
-        <div className="container">
+        <div>
+            <Header buttonGroup={[{ id: 1, title: 'Refresh', mainLink: false, action: fetchUpdateComments},  { id: 2, title: 'To main page', mainLink: true}]}/>
             {loadingNewsList && <LoadingIndicator/>}
-            {Object.keys(newsCard).length !== 0 && (
-                <div className="card mt-3 p-3">
+    {
+        newsCard.title !== initialState.newsCard.title ? (
+                <div className="card mt-3 p-3 container">
                     <div className="row no-gutters">
                         <div className="col-12 col-sm-6 col-md-8 my-auto">
-                            <h4 className="card-title">{newsCard.title}</h4>
+                            <h3 className="card-title">{newsCard.title}</h3>
                             <h6 className="card-subtitle text-muted">{newsCard.by}</h6>
                             <small>{ new Date(+newsCard.time * 1000).toLocaleString('ru')}</small>
                         </div>
-                        <div className="col-6 col-md-4">
+                        <div className="col-6 col-md-4 my-auto">
                             <div className="card-text text-center">
                                 <strong>URL:</strong>
                                 <br />
@@ -94,26 +101,31 @@ const MainList: React.FC<Props> = (props) => {
                                 {copied && (<span className='ml-1'>Copied successful</span>)}
                             </div>
                         </div>
-                    </div>
-                </div>
-            )}
-            
-            <section className='mt-3'>
-                <div className="row">
-                    {newsCard.comments.length === 0 ? (
-                        <div className="col-md-12">
-                            <h4 className="text-center">Комментариев нет</h4>
-                        </div>
-                    ) : (
-                            <div className = "col-md-12">
-                                <h3 className="text-center">Комментарии ({newsCard.quntityComments})</h3>
-                                <hr />
-                                <Comments commentsArray={newsCard.comments} lvlReply={0}/>
                             </div>
-                        )
-                    }
+                            <section className='mt-3 container'>
+                    <div className="row">
+                        {newsCard.comments.length === 0 ? (
+                            <div className="col-md-12">
+                                <h4 className="text-center">Комментариев нет</h4>
+                            </div>
+                        ) : (
+                                <div className="col-md-12">
+                                    <hr className="m-2"/>
+                                    <h4 className="text-center">Комментарии ({newsCard.quntityComments})</h4>
+                                    
+                                    <Comments commentsArray={newsCard.comments} lvlReply={0}/>
+                                </div>
+                            )
+                        }
+                    </div>
+                </section>
                 </div>
-            </section>
+            ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" style={{margin: 'auto', background: 'white', display: 'block', shapeRendering: 'auto'}} width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                    <path d="M10 50A40 40 0 0 0 90 50A40 42 0 0 1 10 50" fill="#1d0e0b" stroke="none">
+                    <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 51;360 50 51"/>
+                    </path>
+                </svg>)}
         </div>
     )
 };

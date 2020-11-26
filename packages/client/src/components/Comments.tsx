@@ -81,7 +81,6 @@ const Comments: React.FC<Props> = (props) => {
                 </div>
                 
             ))}
-            <hr className="mt-1" />
         </div>
     )
 };

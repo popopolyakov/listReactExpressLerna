@@ -52,5 +52,9 @@ export const rootReducer: Reducer<InitialState, DispatchAction> = (state = initi
         return {...state, replyComments: action.payload.replyComments};
     } else if (action.type === ActionType.SET_OPENEDCOMMENTARRAY) {
         return {...state, openedComments: action.payload.openedComments};
+    } else if (action.type === ActionType.DELETE_NEWSCARD) {
+        return {...state, newsCard: action.payload.newsCard};
+    } else if (action.type === ActionType.DELETE_OPENEDCOMMENTARRAY) {
+        return {...state, openedComments: action.payload.openedComments};
     } else return state;
 };

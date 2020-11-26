@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { store } from ".";
-import { DispatchAction } from "./rootReducer";
+import { DispatchAction, initialState } from "./rootReducer";
 import { ActionType } from "./types";
 
 export class RootDispatcher {
@@ -19,9 +19,9 @@ export class RootDispatcher {
         return this.dispatch({ type: ActionType.SET_OPENEDCOMMENTARRAY, payload: {openedComments} })
     };
     
-/*  updateAddress = (address: string) => this.dispatch({type: ActionType.UpdateAddress, payload: {address}});
+    clearNewsCard = () => this.dispatch({type: ActionType.DELETE_NEWSCARD, payload: {newsCard: initialState.newsCard}});
     
-    deleteName = () => this.dispatch({type: ActionType.DeleteName, payload: {}});
+    clearOpenedReply = () => this.dispatch({ type: ActionType.DELETE_OPENEDCOMMENTARRAY, payload: {openedComments: initialState.openedComments} });
     
-    deleteAddress = () => this.dispatch({type: ActionType.DeleteAddress, payload: {}}) */
+ /*     deleteAddress = () => this.dispatch({type: ActionType.DeleteAddress, payload: {}}) */
 }

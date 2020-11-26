@@ -67,7 +67,7 @@ export const fetchReplyComments = (id : Number) => {
   }
 };
 
-export const fetchUpdateComments = () => {
+export const fetchUpdateComments = (idNewsCard : number) => {
   const currentStore = store.getState();
   console.log(!currentStore.loadingNewsList);
   
@@ -79,7 +79,7 @@ export const fetchUpdateComments = () => {
         }
       })
       
-      const response = await fetch(`http://localhost:5000/hackersList/${currentStore.newsCard.id}`);
+      const response = await fetch(`http://localhost:5000/hackersList/${idNewsCard}`);
       const newsCard = await response.json();
       await dispatch({ type: ActionType.SET_NEWSCARD, payload: {
           newsCard
@@ -106,7 +106,7 @@ export const fetchUpdateComments = () => {
       dispatch({
         type: ActionType.SET_LOADING_NEWSLIST, payload: {
           loadingNewsList: false
-      }}) // setTimeout для того, чтобы человек успел прочитать что это окно загрузки
+      }})
     };
   } else {
     return (dispatch) => {
