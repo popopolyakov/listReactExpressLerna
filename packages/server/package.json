@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=prod node dist/index.js",
+    "start": "cross-env NODE_ENV=prod PORT=3000 node dist/index.js",
     "build": "rimraf ./dist/ && cross-env NODE_ENV=prod tsc",
     "dev": "cross-env NODE_ENV=dev nodemon --config \"./nodemon.json\"/",
     "lint": "eslint .",

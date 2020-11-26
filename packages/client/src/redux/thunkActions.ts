@@ -7,7 +7,7 @@ export const fetchHackersList = () => {
       type: ActionType.SET_LOADING_NEWSLIST, payload: {
         loadingNewsList: true
       }})
-      const response = await fetch('http://localhost:5000/hackersList');
+      const response = await fetch('http://localhost:3000/hackersList');
       const hackersList = await response.json();
       console.log(hackersList);
       await dispatch({ type: ActionType.SET_NEWSLIST, payload: {
@@ -27,7 +27,7 @@ export const fetchNewsCard = (id : number) => {
       type: ActionType.SET_LOADING_NEWSLIST, payload: {
         loadingNewsList: true
       }})
-      const response = await fetch(`http://localhost:5000/hackersList/${id}`);
+      const response = await fetch(`http://localhost:3000/hackersList/${id}`);
       const newsCard = await response.json();
       await dispatch({ type: ActionType.SET_NEWSCARD, payload: {
           newsCard
@@ -51,7 +51,7 @@ export const fetchReplyComments = (id : Number) => {
           loadingNewsList: true
         }
       })
-      const response = await fetch(`http://localhost:5000/hackersList/comments/${id}`);
+      const response = await fetch(`http://localhost:3000/hackersList/comments/${id}`);
       const replyComments = await response.json();
       await dispatch({
         type: ActionType.SET_REPLYCOMMENT, payload: {
@@ -79,7 +79,7 @@ export const fetchUpdateComments = (idNewsCard : number) => {
         }
       })
       
-      const response = await fetch(`http://localhost:5000/hackersList/${idNewsCard}`);
+      const response = await fetch(`http://localhost:3000/hackersList/${idNewsCard}`);
       const newsCard = await response.json();
       await dispatch({ type: ActionType.SET_NEWSCARD, payload: {
           newsCard
@@ -89,7 +89,7 @@ export const fetchUpdateComments = (idNewsCard : number) => {
       if (currentStore.openedComments.length > 0) {
         const IDsCommentToUpdate = Object.keys(currentStore.replyComments)
         const EntriesComments = await Promise.all(IDsCommentToUpdate.map(async item => {
-        const response = await fetch(`http://localhost:5000/hackersList/comments/${item}`);
+        const response = await fetch(`http://localhost:3000/hackersList/comments/${item}`);
         const replyComment = await response.json();
         return [`${item}`, replyComment]
       }))

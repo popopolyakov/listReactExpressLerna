@@ -54,7 +54,7 @@ const MainList: React.FC<Props> = (props) => {
             console.log(!loadingNewsList, openedComments);
             
             if (!loadingNewsList) { dispatch(fetchUpdateComments(+params.id)) }
-        }, 5000);
+        }, 30000);
 
         return () => {
             dispatch(rootDispatcher.clearNewsCard())
@@ -106,12 +106,12 @@ const MainList: React.FC<Props> = (props) => {
                     <div className="row">
                         {newsCard.comments.length === 0 ? (
                             <div className="col-md-12">
-                                <h4 className="text-center">Комментариев нет</h4>
+                                <h4 className="text-center">No comments</h4>
                             </div>
                         ) : (
                                 <div className="col-md-12">
                                     <hr className="m-2"/>
-                                    <h4 className="text-center">Комментарии ({newsCard.quntityComments})</h4>
+                                    <h4 className="text-center">Comments ({newsCard.quntityComments})</h4>
                                     
                                     <Comments commentsArray={newsCard.comments} lvlReply={0}/>
                                 </div>
