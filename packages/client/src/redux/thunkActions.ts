@@ -78,8 +78,9 @@ export const fetchUpdateComments = (idNewsCard : number) => {
           loadingNewsList: true
         }
       })
+      console.log(currentStore.newsCard.id);
       
-      const response = await fetch(`http://localhost:3000/hackersList/${idNewsCard}`);
+      const response = await fetch(`http://localhost:3000/hackersList/${currentStore.newsCard.id}`);
       const newsCard = await response.json();
       await dispatch({ type: ActionType.SET_NEWSCARD, payload: {
           newsCard

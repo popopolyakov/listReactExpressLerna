@@ -90,7 +90,7 @@ const MainList: React.FC<Props> = (props) => {
                             <div className="card-text text-center">
                                 <strong>URL:</strong>
                                 <br />
-                                <a href={newsCard.url}>{newsCard.url}</a>
+                                { newsCard.url ? (<><a href={newsCard.url}>{newsCard.url}</a>
                                 <br />
                                 <CopyToClipboard text={newsCard.url} onCopy={() => setCopied(true)}>
                                     <svg style={{ cursor: 'pointer'}} width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-clipboard ml-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -98,7 +98,7 @@ const MainList: React.FC<Props> = (props) => {
                                         <path fillRule="evenodd" d="M9.5 1h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
                                     </svg>
                                 </CopyToClipboard>
-                                {copied && (<span className='ml-1'>Copied successful</span>)}
+                                {copied && (<span className='ml-1'>Copied successful</span>)}</>) : (<p>No URL</p>)}
                             </div>
                         </div>
                             </div>

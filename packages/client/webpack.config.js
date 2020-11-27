@@ -12,6 +12,7 @@ const config = (env, options) => {
 
     return {
         mode: isDevMode ? 'development' : 'production',
+        
         entry: [
             'react-hot-loader/patch',
             './src/index.tsx',
@@ -127,6 +128,9 @@ const config = (env, options) => {
                 'react-dom': '@hot-loader/react-dom',
             },
         },
+        performance: {
+            hints: false
+          },
         devServer: {
             contentBase: './dist',
             historyApiFallback: true,
