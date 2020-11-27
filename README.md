@@ -8,8 +8,8 @@ This is an example of react and express app. All the configurations have been ma
 Clone the project and install it by using npm.
 
 ```bash
-git clone https://github.com/danielmitrov/react-express.git
-cd react-express
+git clone https://github.com/popopolyakov/listReactExpressLerna.git
+cd listReactExpressLerna
 npm install
 ```
 
@@ -18,9 +18,9 @@ To run the app on development mode, go to the root directory and run the followi
 ```bash
 npm run dev 
 ```
-It will run the app on two different ports- 8080 for the client and 5000 for the express app.
+It will run the app on two different ports- 8080 for the client and 3000 for the express app.
 ___
-To run it in production mode:
+To run it in production mode (on port 3000):
 ```bash
 npm start
 ```
