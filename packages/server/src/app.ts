@@ -3,7 +3,6 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import cors from 'cors';
 
-import userRoutes from './routes/user';
 import Axios from 'axios';
 
 
@@ -13,12 +12,13 @@ const port = process.env.PORT || 3000;
 app.use(cors({credentials: true, origin: true}));
 app.use(bodyParser.json());
 
-app.use('/user', userRoutes);
+
 
 app.use(express.static('../client/dist'));
-app.get('/index', function(req, res) {
+app.get(/(\/hackerNews|\/index)/, function(req, res) {
     res.sendFile(path.resolve('../client/dist/index.html'));
 });
+
 
 app.get('/hackersList', async function (req, res) {
     let idsLastPosts : number[] = await Axios.get('https://hacker-news.firebaseio.com/v0/newstories.json').then(res => res.data.slice(0, 100))
@@ -40,7 +40,7 @@ app.get('/hackersList', async function (req, res) {
     res.json(listLastPosts);
 });
 
-app.get('/hackersList/:id', async function (req, res) {
+app.get('/getHackerNews/:id', async function (req, res) {
     let currentID: Number = +req.params.id
     let currentPost = await Axios.get(`https://hacker-news.firebaseio.com/v0/item/${currentID}.json`).then(async item => {
         let comments = []
@@ -80,7 +80,7 @@ app.get('/hackersList/:id', async function (req, res) {
     res.json(currentPost);
 });
 
-app.get('/hackersList/comments/:id', async function (req, res) {
+app.get('/getHackerNews/comments/:id', async function (req, res) {
     let currentID: Number = +req.params.id
     let currentPost = await Axios.get(`https://hacker-news.firebaseio.com/v0/item/${currentID}.json`).then(async item => {
         let comments = []
@@ -110,7 +110,9 @@ app.get('/hackersList/comments/:id', async function (req, res) {
     })
     res.json(currentPost);
 });
-
+app.get('*', (req,res) =>{
+    res.sendFile(path.resolve('../client/dist/index.html'));
+});
 export {
     app,
     port,

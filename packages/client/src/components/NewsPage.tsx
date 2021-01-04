@@ -90,7 +90,8 @@ const MainList: React.FC<Props> = (props) => {
                             <div className="card-text text-center">
                                 <strong>URL:</strong>
                                 <br />
-                                { newsCard.url ? (<><a href={newsCard.url}>{newsCard.url}</a>
+                                    {newsCard.url ? (<>
+                                        <a href={newsCard.url} target="_blank">{newsCard.url}</a>
                                 <br />
                                 <CopyToClipboard text={newsCard.url} onCopy={() => setCopied(true)}>
                                     <svg style={{ cursor: 'pointer'}} width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-clipboard ml-1" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

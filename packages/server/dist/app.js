@@ -6,7 +6,6 @@ const express_1 = tslib_1.__importDefault(require("express"));
 const body_parser_1 = tslib_1.__importDefault(require("body-parser"));
 const path_1 = tslib_1.__importDefault(require("path"));
 const cors_1 = tslib_1.__importDefault(require("cors"));
-const user_1 = tslib_1.__importDefault(require("./routes/user"));
 const axios_1 = tslib_1.__importDefault(require("axios"));
 const app = express_1.default();
 exports.app = app;
@@ -14,9 +13,8 @@ const port = process.env.PORT || 3000;
 exports.port = port;
 app.use(cors_1.default({ credentials: true, origin: true }));
 app.use(body_parser_1.default.json());
-app.use('/user', user_1.default);
 app.use(express_1.default.static('../client/dist'));
-app.get('/index', function (req, res) {
+app.get(/(\/hackerNews|\/index)/, function (req, res) {
     res.sendFile(path_1.default.resolve('../client/dist/index.html'));
 });
 app.get('/hackersList', function (req, res) {
@@ -37,7 +35,7 @@ app.get('/hackersList', function (req, res) {
         res.json(listLastPosts);
     });
 });
-app.get('/hackersList/:id', function (req, res) {
+app.get('/getHackerNews/:id', function (req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         let currentID = +req.params.id;
         let currentPost = yield axios_1.default.get(`https://hacker-news.firebaseio.com/v0/item/${currentID}.json`).then((item) => tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -74,7 +72,7 @@ app.get('/hackersList/:id', function (req, res) {
         res.json(currentPost);
     });
 });
-app.get('/hackersList/comments/:id', function (req, res) {
+app.get('/getHackerNews/comments/:id', function (req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         let currentID = +req.params.id;
         let currentPost = yield axios_1.default.get(`https://hacker-news.firebaseio.com/v0/item/${currentID}.json`).then((item) => tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -102,4 +100,7 @@ app.get('/hackersList/comments/:id', function (req, res) {
         }));
         res.json(currentPost);
     });
+});
+app.get('*', (req, res) => {
+    res.sendFile(path_1.default.resolve('../client/dist/index.html'));
 });

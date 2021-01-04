@@ -27,7 +27,7 @@ export const fetchNewsCard = (id : number) => {
       type: ActionType.SET_LOADING_NEWSLIST, payload: {
         loadingNewsList: true
       }})
-      const response = await fetch(`http://localhost:3000/hackersList/${id}`);
+      const response = await fetch(`http://localhost:3000/getHackerNews/${id}`);
       const newsCard = await response.json();
       await dispatch({ type: ActionType.SET_NEWSCARD, payload: {
           newsCard
@@ -51,7 +51,7 @@ export const fetchReplyComments = (id : Number) => {
           loadingNewsList: true
         }
       })
-      const response = await fetch(`http://localhost:3000/hackersList/comments/${id}`);
+      const response = await fetch(`http://localhost:3000/getHackerNews/comments/${id}`);
       const replyComments = await response.json();
       await dispatch({
         type: ActionType.SET_REPLYCOMMENT, payload: {
@@ -80,7 +80,7 @@ export const fetchUpdateComments = (idNewsCard : number) => {
       })
       console.log(currentStore.newsCard.id);
       
-      const response = await fetch(`http://localhost:3000/hackersList/${currentStore.newsCard.id}`);
+      const response = await fetch(`http://localhost:3000/getHackerNews/${currentStore.newsCard.id}`);
       const newsCard = await response.json();
       await dispatch({ type: ActionType.SET_NEWSCARD, payload: {
           newsCard
@@ -90,7 +90,7 @@ export const fetchUpdateComments = (idNewsCard : number) => {
       if (currentStore.openedComments.length > 0) {
         const IDsCommentToUpdate = Object.keys(currentStore.replyComments)
         const EntriesComments = await Promise.all(IDsCommentToUpdate.map(async item => {
-        const response = await fetch(`http://localhost:3000/hackersList/comments/${item}`);
+        const response = await fetch(`http://localhost:3000/getHackerNews/comments/${item}`);
         const replyComment = await response.json();
         return [`${item}`, replyComment]
       }))
