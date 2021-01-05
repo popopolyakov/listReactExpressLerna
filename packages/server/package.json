@@ -33,5 +33,17 @@
     "tsconfig-paths": "^3.9.0",
     "tslint": "^6.1.1",
     "typescript": "^3.9.7"
-  }
+  },
+  "tasks": [
+    {
+        "taskName": "compile",
+        "type": "shell",
+        "command": "tsc -p tsconfig.json",
+        "group": {
+            "kind": "build",
+            "isDefault": true
+        },
+        "problemMatcher": []
+    }
+]
 }

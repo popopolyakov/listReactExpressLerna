@@ -4,10 +4,13 @@
   "scripts": {
     "start": "cd packages/server && npm start",
     "postinstall": "lerna bootstrap",
-    "build": "lerna run build",
+    "build": "lerna run build --stream",
     "dev:server": "cd packages/server && npm run dev",
     "dev:client": "cd packages/client && npm start",
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\" --names \"SERVER,CLIENT\" -c \"bgRed.bold,bgBlue.bold\""
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\" --names \"SERVER,CLIENT\" -c \"bgRed.bold,bgBlue.bold\"",
+    "bootstrapdocker": "lerna clean --yes && lerna bootstrap",
+    "builddocker": "lerna run build --stream",
+    "startdocker": "cross-env NODE_ENV=production node dist/backend/main"
   },
   "dependencies": {
     "concurrently": "^5.0.2"
