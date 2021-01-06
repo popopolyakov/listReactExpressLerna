@@ -15,7 +15,7 @@ npm install
 
 ## Docker
 Из-за lerna и монорепозитория размер Docker контейнера получился большой.
-https://hub.docker.com/layers/popopolyakov/test-lerna-react/latest/images/sha256:08605295ca60f34a1ed4908c20c54285c6934e2cb7d346f8455eef9464031434
+https://hub.docker.com/layers/popopolyakov/test-lerna-react/
 
 ## Usage
 To run the app on development mode, go to the root directory and run the following command:
